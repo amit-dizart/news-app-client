@@ -1,5 +1,7 @@
 {
   "expo": {
+    "scheme": "dizart.newsapp",
+    "host": "dizartsolutions.com",
     "name": "news-app-client",
     "slug": "news-app-client",
     "version": "1.0.0",
@@ -18,13 +20,36 @@
       "supportsTablet": true
     },
     "android": {
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "*.myapp.io",
+              "pathPrefix": "/records"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dizart.newsapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "66f66538-1cab-48ba-ae93-8ea246402ac6"
+      }
     }
   }
 }
