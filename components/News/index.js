@@ -55,7 +55,7 @@ const News = ({ activeIndex, setActiveIndex, setCurrentNewsContent, linkIndex })
           return prevNews.concat(data?.userNews);
         }
       });
-      
+
       setCurrentNewsContent((prevContent) => data?.userNews[0]);
       setOldNews((prevContent) => parseInt(data?.userNews[0]?.id));
       storeData(data?.userNews[0]?.id)
@@ -179,12 +179,12 @@ const News = ({ activeIndex, setActiveIndex, setCurrentNewsContent, linkIndex })
         ]}
       >
         <View style={styles.page}>
-          {news[activeIndex]?.content ? (
-            <NewsPage newsData={news[activeIndex || 0]} />
-          ) : (
+          {news[activeIndex]?.isAd ? (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#999999" />
+               <NewsPage newsData={news[activeIndex || 0]} />
             </View>
+          ) : (
+            <NewsPage newsData={news[activeIndex || 0]} />
           )}
           {/* {swipeCounter >= 5 && <AdvertisementComponent />} */}
         </View>

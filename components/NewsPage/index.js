@@ -20,7 +20,6 @@ const NewsPage = (props) => {
   const [isBookMarked, setIsBookMrked] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [animation, setAnimation] = useState(new Animated.Value(0));
-
   const [fontsLoaded] = useFonts({
     Raleway: require("../../assets/Fonts/Raleway.ttf"),
     perpeta: require("../../assets/Fonts/perpeta.ttf"),
@@ -85,16 +84,20 @@ const NewsPage = (props) => {
   return (
     <View
       style={{
+        width: '100%',
         backgroundColor: "white",
         flex: 1,
         borderRadius: 10,
         height: "70%",
-        paddingTop : 10,
-        marginTop : 5
+        paddingTop: 10,
+        marginTop: 5
       }}
     >
       <Image
-        source={{ uri: newsData.url_to_image }}
+        source={{
+          uri: newsData?.isAd ?
+            "https://blog.ipleaders.in/wp-content/uploads/2021/10/Advertisement-Media.jpg" : newsData.url_to_image
+        }}
         style={{ ...styles.imageStyle }}
         onLoadStart={() => setIsLoading(true)}
         onLoadEnd={() => setIsLoading(false)}
@@ -114,13 +117,13 @@ const NewsPage = (props) => {
         />
       )}
 
-      <Text style={{ ...styles.title }}>{newsData.title}</Text>
-      <Text style={{ ...styles.content }}>{newsData.description}</Text>
+      <Text style={{ ...styles.title }}>{newsData.title || ""}</Text>
+      <Text style={{ ...styles.content }}>{newsData.description || ""}</Text>
 
       <ImageBackground
         style={styles.footer}
         blurRadius={60}
-        source={{ uri: newsData.url_to_image }}
+        source={{ uri: newsData?.isAd ? "https://blog.ipleaders.in/wp-content/uploads/2021/10/Advertisement-Media.jpg" : newsData.url_to_image }}
       >
         <TouchableOpacity onPress={() => Linking.openURL(newsData.url)}>
           <Text style={{ ...styles.footerurl }}>
@@ -129,50 +132,56 @@ const NewsPage = (props) => {
           <Text style={{ ...styles.more }}>Tap on know more</Text>
         </TouchableOpacity>
       </ImageBackground>
-      {isBookMarked ? (
-        <TouchableOpacity
-          style={styles.bookmark}
-          onPress={() => removeBookmark(newsData.id)}
-        >
-          <Svg
-            width="14"
-            height="16"
-            viewBox="0 0 12 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <Path
-              d="M10.6666 13L5.99998 9.66667L1.33331 13V2.33333C1.33331 1.97971 1.47379 1.64057 1.72384 1.39052C1.97389 1.14048 2.31302 1 2.66665 1H9.33331C9.68694 1 10.0261 1.14048 10.2761 1.39052C10.5262 1.64057 10.6666 1.97971 10.6666 2.33333V13Z"
-              fill="#E97777"
-              stroke="#E97777"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </Svg>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          style={styles.bookmark}
-          onPress={() => addBookmark(newsData)}
-        >
-          <Svg
-            width="14"
-            height="16"
-            viewBox="0 0 12 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <Path
-              d="M10.6667 13L6.00004 9.66667L1.33337 13V2.33333C1.33337 1.97971 1.47385 1.64057 1.7239 1.39052C1.97395 1.14048 2.31309 1 2.66671 1H9.33337C9.687 1 10.0261 1.14048 10.2762 1.39052C10.5262 1.64057 10.6667 1.97971 10.6667 2.33333V13Z"
-              stroke="#E97777"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </Svg>
-        </TouchableOpacity>
-      )}
+      {
+        !newsData?.isAd && (
+          <>
+            {isBookMarked ? (
+              <TouchableOpacity
+                style={styles.bookmark}
+                onPress={() => removeBookmark(newsData.id)}
+              >
+                <Svg
+                  width="14"
+                  height="16"
+                  viewBox="0 0 12 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <Path
+                    d="M10.6666 13L5.99998 9.66667L1.33331 13V2.33333C1.33331 1.97971 1.47379 1.64057 1.72384 1.39052C1.97389 1.14048 2.31302 1 2.66665 1H9.33331C9.68694 1 10.0261 1.14048 10.2761 1.39052C10.5262 1.64057 10.6666 1.97971 10.6666 2.33333V13Z"
+                    fill="#E97777"
+                    stroke="#E97777"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </Svg>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.bookmark}
+                onPress={() => addBookmark(newsData)}
+              >
+                <Svg
+                  width="14"
+                  height="16"
+                  viewBox="0 0 12 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <Path
+                    d="M10.6667 13L6.00004 9.66667L1.33337 13V2.33333C1.33337 1.97971 1.47385 1.64057 1.7239 1.39052C1.97395 1.14048 2.31309 1 2.66671 1H9.33337C9.687 1 10.0261 1.14048 10.2762 1.39052C10.5262 1.64057 10.6667 1.97971 10.6667 2.33333V13Z"
+                    stroke="#E97777"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </Svg>
+              </TouchableOpacity>
+            )}
+          </>
+        )
+      }
     </View>
   );
 };
@@ -210,8 +219,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 5,
     fontFamily: "perpeta",
-    borderBottomLeftRadius : 10,
-    borderBottomRightRadius : 10
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10
 
   },
 
@@ -235,7 +244,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     // borderTopLeftRadius: 8,
     // borderTopRightRadius: 8,
-    borderRadius : 10
+    borderRadius: 10
   },
   bookmark: {
     position: "absolute",
